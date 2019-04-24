@@ -1,9 +1,9 @@
 class CesiumDrawingTool {
 
-    constructor(viewer, elementId, options) {
+    constructor(viewer, elementId, iconPath) {
         this.viewer = viewer;
         this.elementId = elementId;
-        this.options = options;
+        this.iconPath = iconPath;
         this.eventHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);
 
         this.points = new Array();
@@ -89,12 +89,12 @@ class CesiumDrawingTool {
             } else if (this.mode == 'POINT') {
                 var newPosition = this.viewer.camera.pickEllipsoid(event.endPosition);
                 if (Cesium.defined(this.cursorPoint)) {
-                    this.cursorPoint.position.setValue(newPosition);
+                    this.cursorPoint.position = newPosition;
                 } else {
                     this.cursorPoint = this.viewer.entities.add({
                         position: newPosition,
                         billboard: {
-                            image: '/img/map_marker.png',
+                            image: this.iconPath,
                             scale: 0.1
                         }
                     });
@@ -293,7 +293,7 @@ class CesiumDrawingTool {
             shape = this.viewer.entities.add({
                 position: p,
                 billboard: {
-                    image: '/img/map_marker.png',
+                    image: this.iconPath,
                     scale: 0.1
                 }
             });
